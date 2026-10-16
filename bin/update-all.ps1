@@ -73,6 +73,26 @@ if (Get-Command npm -ErrorAction SilentlyContinue) {
     }
 }
 
+# 3. Synchronize Installer Repository & Specter Master CLI
+$installRoot = Split-Path -Parent $PSScriptRoot
+if (Test-Path (Join-Path $installRoot ".git")) {
+    Write-Step "Dong bo cap nhat bo cai dat TuQuet Installer (Git Pull)"
+    try {
+        & git -C $installRoot pull origin main
+    } catch {
+        Write-Host "Luu y khi dong bo git installer: $_" -ForegroundColor Yellow
+    }
+}
+
+if (Get-Command spc -ErrorAction SilentlyContinue) {
+    Write-Step "Kiem tra va cap nhat Specter Master CLI (spc upgrade)"
+    try {
+        & spc upgrade
+    } catch {
+        Write-Host "Luu y khi cap nhat specter cli: $_" -ForegroundColor Yellow
+    }
+}
+
 $elapsed = (Get-Date) - $startTime
 Write-Host "`n========================================================" -ForegroundColor Green
 Write-Host "  HOAN TAT TOAN BO TIEN TRINH TRONG $([math]::Round($elapsed.TotalSeconds, 1))s!" -ForegroundColor Green
