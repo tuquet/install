@@ -133,42 +133,7 @@ function Invoke-DotfilesLinkage {
         Write-Host "  [OK] Added $binDir to User PATH." -ForegroundColor Green
     }
 
-    # 5. VS Code Project Manager
-    $pmSources = @(
-        (Join-Path $HOME "scoop\persist\vscode\data\user-data\User\globalStorage\alefragnani.project-manager"),
-        (Join-Path $env:APPDATA "Code\User\globalStorage\alefragnani.project-manager")
-    )
-    $pmTarget = Join-Path $DotfilesDir "vscode\project-manager"
-    foreach ($pmPath in $pmSources) {
-        $parent = Split-Path $pmPath -Parent
-        if (Test-Path (Split-Path $parent -Parent)) {
-            if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
-            if (Test-Path $pmPath) {
-                $item = Get-Item $pmPath -ErrorAction SilentlyContinue
-                if ($item -and $item.LinkType) { [System.IO.Directory]::Delete($pmPath) }
-            }
-            if (-not (Test-Path $pmPath)) {
-                New-Item -ItemType Junction -Path $pmPath -Target $pmTarget -Force | Out-Null
-                Write-Host "  [OK] VS Code PM Junction -> $pmPath" -ForegroundColor Green
-            }
-        }
-    }
 
-    # 6. PowerShell Profile Loader
-    $loader = "if (Test-Path '$DotfilesDir\powershell\Microsoft.PowerShell_profile.ps1') { . '$DotfilesDir\powershell\Microsoft.PowerShell_profile.ps1' }"
-    $profilePaths = @(
-        "$HOME\Documents\PowerShell",
-        "$HOME\Documents\WindowsPowerShell",
-        "$env:OneDrive\Documents\PowerShell",
-        "$env:OneDrive\Documents\WindowsPowerShell"
-    )
-    foreach ($p in $profilePaths) {
-        if ($p -and (Test-Path (Split-Path $p -Parent))) {
-            if (-not (Test-Path $p)) { New-Item -ItemType Directory -Path $p -Force | Out-Null }
-            Set-Content -Path (Join-Path $p "Microsoft.PowerShell_profile.ps1") -Value $loader -Encoding UTF8
-        }
-    }
-    Write-Host "  [OK] PowerShell Profile Loader wired up for pwsh and powershell 5.1." -ForegroundColor Green
 
     # 7. Obsidian Vault Registration
     $obsVault = Join-Path $HOME "OneDrive\Documents\Obsidian Vault"

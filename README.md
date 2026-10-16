@@ -29,18 +29,11 @@ install/
 │   ├── .gitconfig                     # Git config mẫu, thông tin user và aliases
 │   └── ignore                         # Global gitignore (loại trừ rác OS, Editor)
 │
-├── powershell/                        # Môi trường dòng lệnh PowerShell
-│   └── Microsoft.PowerShell_profile.ps1 # Profile chung (fnm, oh-my-posh, git-hide)
-│
 ├── terminal/                          # Cấu hình Windows Terminal
 │   └── LocalState/                    # Settings giao diện, font JetBrainsMono & theme
 │       ├── settings.json
 │       ├── state.json
 │       └── elevated-state.json
-│
-└── vscode/                            # Cấu hình Visual Studio Code
-    └── project-manager/               # Cấu hình danh mục dự án cho extension Project Manager
-        └── projects.json
 ```
 
 ---
@@ -54,8 +47,6 @@ Toàn bộ liên kết sử dụng **NTFS Junction** hoặc cơ chế native c�
 | **Terminal** | `install\terminal\LocalState\` | `%LOCALAPPDATA%\Packages\...\LocalState` | NTFS Junction (`mklink /J`) |
 | **Git Config** | `install\git\.gitconfig` | `%USERPROFILE%\.gitconfig` | `include.path` |
 | **Git Ignore** | `install\git\ignore` | N/A | `core.excludesfile` |
-| **PowerShell** | `install\powershell\profile.ps1` | `Documents\PowerShell\` & `WindowsPowerShell\` | Dot-source Loader |
-| **VS Code PM** | `install\vscode\project-manager\` | Scoop Persist & `%APPDATA%\Code\` | NTFS Junction (`mklink /J`) |
 | **CLI PATH** | `install\bin\` | Biến môi trường User `Path` | User Environment Variable |
 
 ---

@@ -8,28 +8,10 @@ Write-Host "====================================================================
 Write-Host "                TUQUET DOTFILES - SYSTEM HEALTH CHECK                         " -ForegroundColor Cyan
 Write-Host "==============================================================================" -ForegroundColor Cyan
 
-# 1. SSH Profiles & Keys
-Write-Host "`n[1. SSH Profiles & Configurations]" -ForegroundColor Yellow
-$hosts = @("my-pc", "my-thinkpad", "vps-desk", "vps-tattoo")
-foreach ($h in $hosts) {
-    $cfg = ssh -G $h 2>$null | Select-String "^hostname "
-    $user = ssh -G $h 2>$null | Select-String "^user "
-    if ($cfg) {
-        $ip = $cfg.ToString().Replace("hostname ", "").Trim()
-        $u = if ($user) { $user.ToString().Replace("user ", "").Trim() } else { "root" }
-        Write-Host "  [OK] $h ($u@$ip)" -ForegroundColor Green
-    } else {
-        Write-Host "  [FAIL] $h (Loi cau hinh hoac khong tim thay)" -ForegroundColor Red
-    }
-}
-
-# 2. NTFS Junctions & Links
-Write-Host "`n[2. NTFS Junctions & Dotfiles Links]" -ForegroundColor Yellow
+# 1. NTFS Junctions & System Links
+Write-Host "`n[1. NTFS Junctions & System Links]" -ForegroundColor Yellow
 $juncs = @(
-    @("SSH Servers", "$HOME\.ssh\servers"),
-    @("Windows Terminal", "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"),
-    @("VS Code PM (Scoop)", "$HOME\scoop\persist\vscode\data\user-data\User\globalStorage\alefragnani.project-manager"),
-    @("VS Code PM (Native)", "$env:APPDATA\Code\User\globalStorage\alefragnani.project-manager")
+    @("Windows Terminal", "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState")
 )
 foreach ($j in $juncs) {
     $name = $j[0]
