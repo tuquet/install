@@ -1,0 +1,13 @@
+# Windows temporary & system junk
+*.download
+*.tmp
+*.bak
+Dang
+[Dd]esktop.ini
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+$RECYCLE.BIN/
+
+# Scoop caches
+*.cache

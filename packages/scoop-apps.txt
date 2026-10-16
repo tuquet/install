@@ -1,0 +1,30 @@
+# ==============================================================================
+# Danh muc ung dung cai dat qua Scoop (TuQuet Dotfiles)
+# Cu phap: moi dong 1 ten package. Dong bat dau bang # se bi bo qua.
+# ==============================================================================
+
+# --- Dev Core & Runtime ---
+7zip
+git
+gh
+pwsh
+fnm
+python
+uv
+
+# --- Cloud CLIs & Tunnels ---
+supabase
+cloudflared
+
+# --- Productivity & GUI Apps ---
+vscode
+obsidian
+telegram
+bruno
+wpsoffice
+cpu-z
+
+# --- Utilities & Fonts ---
+powertoys
+quicklook
+JetBrainsMono-NF

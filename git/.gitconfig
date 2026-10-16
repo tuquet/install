@@ -1,0 +1,35 @@
+# ==============================================================================
+# Centralized Git Configuration - Synced via OneDrive
+# ==============================================================================
+
+[user]
+	name = TuQuet
+	email = tunyk.93@gmail.com
+
+[core]
+	quotepath = false
+	excludesfile = ~/OneDrive/dotfiles/git/ignore
+	autocrlf = true
+
+[init]
+	defaultBranch = main
+
+[credential "https://git.icomm.vn"]
+	provider = generic
+
+[credential "helperselector"]
+	selected = manager
+
+[safe]
+	directory = *
+
+[alias]
+	st = status -sb
+	co = checkout
+	cb = checkout -b
+	br = branch
+	cm = commit -m
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	last = log -1 HEAD
+	unstage = reset HEAD --
+	amend = commit --amend --no-edit

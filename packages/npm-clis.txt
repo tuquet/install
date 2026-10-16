@@ -1,0 +1,8 @@
+# ==============================================================================
+# Danh muc Cloud CLIs cai dat toan cuc qua NPM (TuQuet Dotfiles)
+# Cu phap: moi dong 1 ten package. Dong bat dau bang # se bi bo qua.
+# ==============================================================================
+
+vercel
+wrangler
+netlify-cli

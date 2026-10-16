@@ -1,0 +1,34 @@
+[
+	{
+		"name": "my-skills",
+		"rootPath": "c:\\Repository\\my-skills",
+		"paths": [],
+		"tags": [],
+		"enabled": true,
+		"profile": ""
+	},
+	{
+		"name": "crm-ecosystem",
+		"rootPath": "c:\\Repository\\crm-ecosystem",
+		"paths": [],
+		"tags": [],
+		"enabled": true,
+		"profile": ""
+	},
+	{
+		"name": "automa-ecosystem",
+		"rootPath": "c:\\Repository\\automa-ecosystem",
+		"paths": [],
+		"tags": [],
+		"enabled": true,
+		"profile": ""
+	},
+	{
+		"name": "servers",
+		"rootPath": "c:\\Users\\Admin\\.ssh\\servers",
+		"paths": [],
+		"tags": [],
+		"enabled": true,
+		"profile": ""
+	}
+]
