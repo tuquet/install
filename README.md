@@ -25,26 +25,17 @@ install/
 │   ├── scoop-apps.txt                 # Danh sách 18 ứng dụng quản lý qua Scoop
 │   └── npm-clis.txt                   # Danh sách Cloud CLIs cài đặt qua NPM
 │
-├── git/                               # Cấu hình Git toàn cục
-│   ├── .gitconfig                     # Git config mẫu, thông tin user và aliases
-│   └── ignore                         # Global gitignore (loại trừ rác OS, Editor)
-│
-├── terminal/                          # Cấu hình Windows Terminal
-│   └── LocalState/                    # Settings giao diện, font JetBrainsMono & theme
-│       ├── settings.json
-│       ├── state.json
-│       └── elevated-state.json
+└── git/                               # Cấu hình Git toàn cục
+    ├── .gitconfig                     # Git config mẫu, thông tin user và aliases
+    └── ignore                         # Global gitignore (loại trừ rác OS, Editor)
 ```
 
 ---
 
 ## 2. Bản Đồ Ánh Xạ Hệ Thống (System Linkage Map)
 
-Toàn bộ liên kết sử dụng **NTFS Junction** hoặc cơ chế native của ứng dụng, không nhân bản dữ liệu:
-
 | Thành phần | Đường dẫn gốc trong Install | Vị trí thực tế trên Windows | Cơ chế liên kết |
 | :--- | :--- | :--- | :--- |
-| **Terminal** | `install\terminal\LocalState\` | `%LOCALAPPDATA%\Packages\...\LocalState` | NTFS Junction (`mklink /J`) |
 | **Git Config** | `install\git\.gitconfig` | `%USERPROFILE%\.gitconfig` | `include.path` |
 | **Git Ignore** | `install\git\ignore` | N/A | `core.excludesfile` |
 | **CLI PATH** | `install\bin\` | Biến môi trường User `Path` | User Environment Variable |

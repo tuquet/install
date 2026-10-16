@@ -8,27 +8,14 @@ Write-Host "====================================================================
 Write-Host "                TUQUET DOTFILES - SYSTEM HEALTH CHECK                         " -ForegroundColor Cyan
 Write-Host "==============================================================================" -ForegroundColor Cyan
 
-# 1. NTFS Junctions & System Links
-Write-Host "`n[1. NTFS Junctions & System Links]" -ForegroundColor Yellow
-$juncs = @(
-    @("Windows Terminal", "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState")
-)
-foreach ($j in $juncs) {
-    $name = $j[0]
-    $path = $j[1]
-    if (Test-Path $path) {
-        $item = Get-Item $path
-        if ($item.LinkType) {
-            Write-Host "  [OK] $name -> $($item.LinkType) thanh cong" -ForegroundColor Green
-        } else {
-            Write-Host "  [OK] $name -> Ton tai (Thu muc thuong)" -ForegroundColor Green
-        }
+# 1. Dev Core Tools
+Write-Host "`n[1. Dev Core Tools]" -ForegroundColor Yellow
+$coreTools = @("git", "pwsh", "scoop", "fnm", "python", "uv")
+foreach ($tool in $coreTools) {
+    if (Get-Command $tool -ErrorAction SilentlyContinue) {
+        Write-Host "  [OK] $tool da san sang" -ForegroundColor Green
     } else {
-        if ($name -match "Native") {
-            # Khong bat buoc neu dung Scoop
-        } else {
-            Write-Host "  [MISSING] $name chua duoc lien ket" -ForegroundColor Yellow
-        }
+        Write-Host "  [MISSING] $tool chua co trong PATH" -ForegroundColor Yellow
     }
 }
 

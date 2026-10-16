@@ -102,55 +102,19 @@ function Invoke-NpmBootstrap {
 function Invoke-DotfilesLinkage {
     Write-Host "`n[+] Thiet lap he thong lien ket Dotfiles (NTFS Junctions & SSOT)..." -ForegroundColor Yellow
 
-    # 1. Windows Terminal LocalState
-    $wtPkg = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
-    $wtTarget = Join-Path $DotfilesDir "terminal\LocalState"
-    if (Test-Path (Split-Path $wtPkg -Parent)) {
-        if (Test-Path $wtPkg) {
-            $item = Get-Item $wtPkg
-            if ($item.LinkType) {
-                [System.IO.Directory]::Delete($wtPkg)
-            } else {
-                Remove-Item -Path $wtPkg -Recurse -Force -ErrorAction SilentlyContinue
-            }
-        }
-        New-Item -ItemType Junction -Path $wtPkg -Target $wtTarget -Force | Out-Null
-        Write-Host "  [OK] Windows Terminal LocalState Junction active." -ForegroundColor Green
-    }
-
-    # 3. Git Global Config
+    # 1. Git Global Config
     if (Get-Command git -ErrorAction SilentlyContinue) {
         $gitConfigTarget = (Join-Path $DotfilesDir "git\.gitconfig").Replace("\", "/")
         & git config --global include.path $gitConfigTarget
         Write-Host "  [OK] Git global config included -> $gitConfigTarget" -ForegroundColor Green
     }
 
-    # 4. User PATH (bin/)
+    # 2. User PATH (bin/)
     $binDir = Join-Path $DotfilesDir "bin"
     $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
     if (-not ($userPath -split ';').Contains($binDir)) {
         [Environment]::SetEnvironmentVariable('Path', "$userPath;$binDir".TrimEnd(';'), 'User')
         Write-Host "  [OK] Added $binDir to User PATH." -ForegroundColor Green
-    }
-
-
-
-    # 7. Obsidian Vault Registration
-    $obsVault = Join-Path $HOME "OneDrive\Documents\Obsidian Vault"
-    if (Test-Path $obsVault) {
-        $obsDir = Join-Path $env:APPDATA "obsidian"
-        if (-not (Test-Path $obsDir)) { New-Item -ItemType Directory -Path $obsDir -Force | Out-Null }
-        $vaultConfig = @{
-            'vaults' = @{
-                'primary-vault' = @{
-                    'path' = $obsVault
-                    'ts' = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-                    'open' = $true
-                }
-            }
-        }
-        $vaultConfig | ConvertTo-Json -Depth 5 | Set-Content -Path (Join-Path $obsDir "obsidian.json") -Encoding UTF8
-        Write-Host "  [OK] Obsidian Primary Vault registered." -ForegroundColor Green
     }
 
     Write-Host "`n✨ Dotfiles Linkage Completed Successfully!" -ForegroundColor Green
