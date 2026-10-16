@@ -30,13 +30,13 @@ if ([string]::IsNullOrWhiteSpace($DotfilesDir)) {
         $DotfilesDir = Split-Path -Parent $MyInvocation.MyCommand.Path
     } else {
         # Running directly via irm ... | iex in memory
-        $DotfilesDir = "D:\Repository\tuquet\dotfiles"
+        $DotfilesDir = "D:\Repository\tuquet\install"
         if (-not (Test-Path $DotfilesDir)) {
-            $DotfilesDir = "$HOME\dotfiles"
+            $DotfilesDir = "$HOME\install"
         }
         if (-not (Test-Path $DotfilesDir)) {
-            Write-Host "[*] Detected remote execution. Cloning dotfiles repository..." -ForegroundColor Cyan
-            & git clone https://github.com/tuquet/win-dotfiles.git $DotfilesDir
+            Write-Host "[*] Detected remote execution. Cloning installer repository..." -ForegroundColor Cyan
+            & git clone https://github.com/tuquet/install.git $DotfilesDir
         }
     }
 }
