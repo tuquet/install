@@ -11,18 +11,15 @@ install/
 ├── .gitignore                         # Loại trừ rác hệ thống, file tạm
 ├── README.md                          # Tài liệu hướng dẫn sử dụng
 ├── install.ps1                        # 1-Liner Bootstrap cho máy mới (PowerShell Native)
-├── setup-new-pc.cmd                   # Trình cài đặt giao diện CMD cổ điển
 │
 ├── bin/                               # Thư mục công cụ CLI (Tự động nạp vào PATH)
 │   ├── doctor.cmd                     # Kiểm tra toàn vẹn hệ thống
 │   ├── doctor.ps1
-│   ├── dotfiles.cmd                   # Trợ lý CLI quản lý môi trường
-│   ├── dotfiles.ps1
 │   ├── update-all.cmd                 # Cập nhật toàn bộ Scoop, NPM packages & dọn dẹp cache
 │   └── update-all.ps1
 │
 ├── packages/                          # Khai báo danh mục phần mềm (Declarative Packages)
-│   ├── scoop-apps.txt                 # Danh sách 18 ứng dụng quản lý qua Scoop
+│   ├── scoop-apps.txt                 # Danh sách ứng dụng quản lý qua Scoop
 │   └── npm-clis.txt                   # Danh sách Cloud CLIs cài đặt qua NPM
 │
 └── git/                               # Cấu hình Git toàn cục

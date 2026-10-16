@@ -56,8 +56,8 @@ if (Get-Command scoop -ErrorAction SilentlyContinue) {
 
 # 2. Update Global NPM Packages (Cloud CLIs: Vercel, Cloudflare Wrangler, Netlify)
 if (Get-Command npm -ErrorAction SilentlyContinue) {
-    $dotfilesRoot = Split-Path -Parent $PSScriptRoot
-    $npmListFile = Join-Path $dotfilesRoot "packages\npm-clis.txt"
+    $installRoot = Split-Path -Parent $PSScriptRoot
+    $npmListFile = Join-Path $installRoot "packages\npm-clis.txt"
     $cloudCLIs = if (Test-Path $npmListFile) {
         Get-Content $npmListFile | Where-Object { $_ -notmatch '^\s*#' -and $_.Trim() }
     } else {
@@ -69,25 +69,6 @@ if (Get-Command npm -ErrorAction SilentlyContinue) {
             & npm update -g $pkg
         } catch {
             Write-Host "Canh bao khi cap nhat $pkg: $_" -ForegroundColor Yellow
-        }
-    }
-}
-
-# 3. Kiem tra va bao ve SSH Config SSOT
-$dotfilesRoot = Split-Path -Parent $PSScriptRoot
-$dotfilesSshConfig = Join-Path $dotfilesRoot "ssh\config"
-$localSshConfig = "$HOME\.ssh\config"
-if (Test-Path $dotfilesSshConfig) {
-    if (-not (Test-Path $localSshConfig)) {
-        Copy-Item -Path $dotfilesSshConfig -Destination $localSshConfig -Force
-        Write-Host "-> Da sao chep SSH config tu OneDrive sang may cuc bo." -ForegroundColor DarkCyan
-    } else {
-        $dotfilesHash = (Get-FileHash -Path $dotfilesSshConfig).Hash
-        $localHash = (Get-FileHash -Path $localSshConfig).Hash
-        if ($dotfilesHash -ne $localHash) {
-            Write-Host "-> Luu y: File ~/.ssh/config khac voi OneDrive SSOT. Giu nguyen file goc." -ForegroundColor Yellow
-        } else {
-            Write-Host "-> SSH config SSOT dong nhat hoan toan." -ForegroundColor DarkCyan
         }
     }
 }

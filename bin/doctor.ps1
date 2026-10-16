@@ -1,11 +1,11 @@
 # ==============================================================================
-# TuQuet Dotfiles - System Health Check (Doctor)
+# TuQuet System Health Check (Doctor)
 # ==============================================================================
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 Write-Host "==============================================================================" -ForegroundColor Cyan
-Write-Host "                TUQUET DOTFILES - SYSTEM HEALTH CHECK                         " -ForegroundColor Cyan
+Write-Host "                  TUQUET - SYSTEM HEALTH CHECK                                " -ForegroundColor Cyan
 Write-Host "==============================================================================" -ForegroundColor Cyan
 
 # 1. Dev Core Tools

@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
-    TuQuet Dotfiles - Modern Windows Bootstrap & Synchronization Engine
+    TuQuet Installer - Modern Windows Bootstrap & Synchronization Engine
 .DESCRIPTION
-    One-line modern installer supporting unattended CLI flags, NTFS Junction linkage,
-    Scoop declarative packages, SSH SSOT, and Windows Terminal sync.
+    One-line modern installer supporting unattended CLI flags, environment setup,
+    Scoop declarative packages, and system utilities.
 .PARAMETER Mode
-    Installation mode: Full (Apps + CLIs + Links), LinkOnly (Dotfiles only), UpdateAll (Update scoop/clis/caches)
+    Installation mode: Full (Apps + CLIs + Config), LinkOnly (Git & PATH setup only), UpdateAll (Update scoop/clis/caches)
 .PARAMETER NonInteractive
     Skip interactive prompts and execute silently
 .EXAMPLE
@@ -24,28 +24,28 @@ param(
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-$DotfilesDir = $PSScriptRoot
-if ([string]::IsNullOrWhiteSpace($DotfilesDir)) {
+$InstallDir = $PSScriptRoot
+if ([string]::IsNullOrWhiteSpace($InstallDir)) {
     if ($MyInvocation -and $MyInvocation.MyCommand -and -not [string]::IsNullOrWhiteSpace($MyInvocation.MyCommand.Path)) {
-        $DotfilesDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+        $InstallDir = Split-Path -Parent $MyInvocation.MyCommand.Path
     } else {
         # Running directly via irm ... | iex in memory
-        $DotfilesDir = "D:\Repository\tuquet\install"
-        if (-not (Test-Path $DotfilesDir)) {
-            $DotfilesDir = "$HOME\install"
+        $InstallDir = "D:\Repository\tuquet\install"
+        if (-not (Test-Path $InstallDir)) {
+            $InstallDir = "$HOME\install"
         }
-        if (-not (Test-Path $DotfilesDir)) {
+        if (-not (Test-Path $InstallDir)) {
             Write-Host "[*] Detected remote execution. Cloning installer repository..." -ForegroundColor Cyan
-            & git clone https://github.com/tuquet/install.git $DotfilesDir
+            & git clone https://github.com/tuquet/install.git $InstallDir
         }
     }
 }
 
 function Write-Banner {
     Write-Host "==============================================================================" -ForegroundColor Cyan
-    Write-Host "             TUQUET DOTFILES - MODERN WINDOWS BOOTSTRAP                       " -ForegroundColor Cyan
+    Write-Host "                TUQUET - MODERN WINDOWS INSTALLER & BOOTSTRAP                 " -ForegroundColor Cyan
     Write-Host "==============================================================================" -ForegroundColor Cyan
-    Write-Host " Root: $DotfilesDir`n" -ForegroundColor DarkGray
+    Write-Host " Root: $InstallDir`n" -ForegroundColor DarkGray
 }
 
 function Invoke-ScoopBootstrap {
@@ -69,7 +69,7 @@ function Invoke-ScoopBootstrap {
     }
 
     Write-Host "`n[2/4] Cai dat danh muc ung dung qua Scoop..." -ForegroundColor Yellow
-    $appsFile = Join-Path $DotfilesDir "packages\scoop-apps.txt"
+    $appsFile = Join-Path $InstallDir "packages\scoop-apps.txt"
     if (Test-Path $appsFile) {
         $apps = Get-Content $appsFile | Where-Object { $_ -and -not $_.StartsWith("#") }
         foreach ($app in $apps) {
@@ -83,7 +83,7 @@ function Invoke-ScoopBootstrap {
 function Invoke-NpmBootstrap {
     Write-Host "`n[3/4] Cai dat Cloud CLIs qua NPM..." -ForegroundColor Yellow
     if (Get-Command npm -ErrorAction SilentlyContinue) {
-        $npmFile = Join-Path $DotfilesDir "packages\npm-clis.txt"
+        $npmFile = Join-Path $InstallDir "packages\npm-clis.txt"
         $clis = if (Test-Path $npmFile) {
             Get-Content $npmFile | Where-Object { $_ -and -not $_.StartsWith("#") }
         } else {
@@ -99,30 +99,30 @@ function Invoke-NpmBootstrap {
     }
 }
 
-function Invoke-DotfilesLinkage {
-    Write-Host "`n[+] Thiet lap he thong lien ket Dotfiles (NTFS Junctions & SSOT)..." -ForegroundColor Yellow
+function Invoke-SystemConfig {
+    Write-Host "`n[+] Thiet lap cau hinh moi truong (Git Config & User PATH)..." -ForegroundColor Yellow
 
     # 1. Git Global Config
     if (Get-Command git -ErrorAction SilentlyContinue) {
-        $gitConfigTarget = (Join-Path $DotfilesDir "git\.gitconfig").Replace("\", "/")
+        $gitConfigTarget = (Join-Path $InstallDir "git\.gitconfig").Replace("\", "/")
         & git config --global include.path $gitConfigTarget
         Write-Host "  [OK] Git global config included -> $gitConfigTarget" -ForegroundColor Green
     }
 
     # 2. User PATH (bin/)
-    $binDir = Join-Path $DotfilesDir "bin"
+    $binDir = Join-Path $InstallDir "bin"
     $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
     if (-not ($userPath -split ';').Contains($binDir)) {
         [Environment]::SetEnvironmentVariable('Path', "$userPath;$binDir".TrimEnd(';'), 'User')
         Write-Host "  [OK] Added $binDir to User PATH." -ForegroundColor Green
     }
 
-    Write-Host "`n✨ Dotfiles Linkage Completed Successfully!" -ForegroundColor Green
+    Write-Host "`n✨ System Configuration Completed Successfully!" -ForegroundColor Green
 }
 
 function Invoke-UpdateSystem {
     Write-Host "`n[*] Updating Scoop, Packages & Caches..." -ForegroundColor Cyan
-    $updateScript = Join-Path $DotfilesDir "bin\update-all.ps1"
+    $updateScript = Join-Path $InstallDir "bin\update-all.ps1"
     if (Test-Path $updateScript) {
         & pwsh -NoProfile -ExecutionPolicy Bypass -File $updateScript
     }
@@ -133,8 +133,8 @@ Write-Banner
 
 if ($Mode -eq 'Interactive' -and -not $NonInteractive) {
     Write-Host "Chon che do cai dat:" -ForegroundColor White
-    Write-Host "  [1] Cai dat tron goi (Full Bootstrap: Apps + CLIs + Links)"
-    Write-Host "  [2] Chi thiet lap lien ket Dotfiles (Link Only - 2 giay)"
+    Write-Host "  [1] Cai dat tron goi (Full Bootstrap: Apps + CLIs + Config)"
+    Write-Host "  [2] Chi thiet lap moi truong (Git Config & PATH - 2 giay)"
     Write-Host "  [3] Cap nhat toan bo he thong (Update All)"
     Write-Host "  [0] Thoat`n"
 
@@ -151,10 +151,10 @@ switch ($Mode) {
     'Full' {
         Invoke-ScoopBootstrap
         Invoke-NpmBootstrap
-        Invoke-DotfilesLinkage
+        Invoke-SystemConfig
     }
     'LinkOnly' {
-        Invoke-DotfilesLinkage
+        Invoke-SystemConfig
     }
     'UpdateAll' {
         Invoke-UpdateSystem
@@ -162,7 +162,7 @@ switch ($Mode) {
 }
 
 # Run Doctor check if exists
-$doctorScript = Join-Path $DotfilesDir "bin\doctor.ps1"
+$doctorScript = Join-Path $InstallDir "bin\doctor.ps1"
 if (Test-Path $doctorScript) {
     & pwsh -NoProfile -ExecutionPolicy Bypass -File $doctorScript
 }

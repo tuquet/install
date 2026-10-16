@@ -1,5 +1,5 @@
 # ==============================================================================
-# Danh muc ung dung cai dat qua Scoop (TuQuet Dotfiles)
+# Danh muc ung dung cai dat qua Scoop (TuQuet Installer)
 # Cu phap: moi dong 1 ten package. Dong bat dau bang # se bi bo qua.
 # ==============================================================================
 

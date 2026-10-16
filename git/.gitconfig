@@ -8,7 +8,7 @@
 
 [core]
 	quotepath = false
-	excludesfile = ~/OneDrive/dotfiles/git/ignore
+	excludesfile = ~/.gitignore_global
 	autocrlf = true
 
 [init]
