@@ -58,11 +58,19 @@ function Invoke-ScoopBootstrap {
     }
 
     # Add essential buckets
-    $buckets = @('extras', 'nerd-fonts')
-    foreach ($b in $buckets) {
+    $bucketConfigs = @(
+        @{ Name = 'extras'; Url = '' },
+        @{ Name = 'nerd-fonts'; Url = '' },
+        @{ Name = 'tuquet'; Url = 'https://github.com/tuquet/scoop-bucket' }
+    )
+    foreach ($b in $bucketConfigs) {
         try {
-            & scoop bucket add $b 2>$null | Out-Null
-            Write-Host "  [OK] Bucket '$b' active." -ForegroundColor Green
+            if ($b.Url) {
+                & scoop bucket add $b.Name $b.Url 2>$null | Out-Null
+            } else {
+                & scoop bucket add $b.Name 2>$null | Out-Null
+            }
+            Write-Host "  [OK] Bucket '$($b.Name)' active." -ForegroundColor Green
         } catch {
             # Already exists
         }

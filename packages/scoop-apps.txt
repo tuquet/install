@@ -11,6 +11,7 @@ pwsh
 fnm
 python
 uv
+specter
 
 # --- Cloud CLIs & Tunnels ---
 supabase
