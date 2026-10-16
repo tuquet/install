@@ -75,8 +75,8 @@ Toàn bộ liên kết sử dụng **NTFS Junction** hoặc cơ chế native c�
 Bạn có thể chạy trực tiếp từ PowerShell mà không cần mở giao diện Explorer:
 
 ```powershell
-# Cách 1: Chạy từ xa trực tiếp trên máy mới qua 1 dòng lệnh (One-Liner Bootstrap):
-irm https://raw.githubusercontent.com/tuquet/dotfiles/main/install.ps1 -Headers @{ Authorization = "token $(gh auth token)" } | iex
+# Cách 1: Chạy từ xa trực tiếp trên máy mới qua 1 dòng lệnh (One-Liner Public Bootstrap):
+irm https://raw.githubusercontent.com/tuquet/win-dotfiles/main/install.ps1 | iex
 
 # Cách 2: Thiết lập liên kết Dotfiles siêu tốc từ local (2 giây - Khuyên dùng):
 pwsh -File d:\Repository\tuquet\dotfiles\install.ps1 -Mode LinkOnly

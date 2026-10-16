@@ -36,7 +36,7 @@ if ([string]::IsNullOrWhiteSpace($DotfilesDir)) {
         }
         if (-not (Test-Path $DotfilesDir)) {
             Write-Host "[*] Detected remote execution. Cloning dotfiles repository..." -ForegroundColor Cyan
-            & git clone https://github.com/tuquet/dotfiles.git $DotfilesDir
+            & git clone https://github.com/tuquet/win-dotfiles.git $DotfilesDir
         }
     }
 }
